@@ -1,29 +1,27 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import UserCard from "./UserCard";
+import axios from "axios";
 
 const UserList = () => {
     const [user, setUser] = useState();
-    const [error, setError] = useState(null);
+    const [err, setErr] = useState(null);
     useEffect(() => {
-        //method 1
         // function fetchData() {
         //     fetch("https://jsonplaceholder.typicode.com/users")
         //         .then((res) => res.json())
         //         .then((res) => setUser(res))
-        //         .catch((err) => setError(err));
+        //         .catch((err) => setErr(err));
         // }
         // fetchData();
-        //method2
         // function fetchData() {
         //     axios
         //         .get("https://jsonplaceholder.typicode.com/users")
         //         .then((res) => setUser(res.data))
-        //         .catch((err) => setError(err));
+        //         .catch((err) => setErr(err));
         // }
         // fetchData();
-        //third method
         const fetchData = async () => {
             try {
                 const { data } = await axios.get(
@@ -31,18 +29,23 @@ const UserList = () => {
                 );
                 setUser(data);
             } catch (error) {
-                setError(error);
+                setErr(error);
             }
         };
         fetchData();
     }, []);
-    console.log(user);
 
     return (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {" "}
-            {error ? (
-                <Spinner animation="grow" />
+        <div
+            style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                margin:"6%", 
+            }}
+        >
+            {err ? (
+                <h2>error</h2>
             ) : (
                 user && user.map((el, i) => <UserCard el={el} key={i} />)
             )}
